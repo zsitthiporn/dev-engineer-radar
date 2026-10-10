@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "id": "example-tool-capability-preview",
+  "product": "Example Tool",
+  "productKey": "example-tool",
+  "event": "Capability preview",
+  "eventKey": "capability",
+  "milestone": "preview",
+  "firstSeen": "2026-10-10",
+  "lastReported": "2026-10-10",
+  "publishedAt": "2026-10-09",
+  "status": "Preview",
+  "coverage": "NEW",
+  "tags": [
+    "DevTool"
+  ],
+  "sourceType": "official",
+  "sourceUrl": "https://example.com/release",
+  "reportPath": "reports/2026/2026-10-10.md",
+  "evidenceSummary": "Example only: replace with a verified primary-source statement."
+}

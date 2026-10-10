@@ -4,6 +4,11 @@
 
 ### 1. [NEW|UPDATE] Title
 
+<!-- radar:item REPLACE-WITH-CANONICAL-ID -->
+
+Use the same ID as the schemaVersion 2 history row. Duplicate a marker only if
+the same item intentionally appears in multiple sections of this report.
+
 **Score:** X/10  
 **Maturity:** Experimental | Preview | Production Ready  
 **Recommendation:** Try | Watch | Skip  

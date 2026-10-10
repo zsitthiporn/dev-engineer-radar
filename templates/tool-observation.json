@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-tool-2026-10-10",
+  "toolId": "example-tool",
+  "observedAt": "2026-10-10",
+  "recommendation": "Watch",
+  "maturity": "Experimental",
+  "sourceUrl": "https://example.com/release",
+  "notes": "Example only: verify the source and record your evaluation rationale.",
+  "storyIds": []
+}

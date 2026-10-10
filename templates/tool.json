@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-tool",
+  "name": "Example Tool",
+  "aliases": [],
+  "homepage": "https://example.com",
+  "tags": [
+    "DevTool"
+  ],
+  "firstSeen": "2026-10-10"
+}

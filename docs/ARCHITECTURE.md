@@ -1,113 +1,112 @@
 # Architecture
 
-## Purpose
+Modified 2026-10-10: schemas, conservative identity matching and derived history views.
 
-Dev Engineer Radar is a persistent personal engineering intelligence system. The repository is not only an archive of daily news; it is the memory layer used to avoid repetition and track technology evolution over time.
+## Purpose and boundary
+
+Dev Engineer Radar uses GitHub as durable, reviewable memory. Human/agent producers
+discover developments, verify primary sources and write Thai editorial reports.
+The Python package validates the memory, classifies candidates and derives views
+offline. It does not crawl news, fetch metrics or call an LLM.
 
 ## Pipeline
 
 ```text
-Recent sources
-    ↓
-Candidate discovery
-    ↓
-Primary-source verification
-    ↓
-Semantic normalization
-    ↓
-Persistent dedupe against data/seen-items.jsonl
-    ↓
-Material-update detection
-    ↓
-Ranking
-    ↓
-Daily report
-    ↓
-Append seen history
+primary sources -> verified candidate -> normalized product/event keys
+                                      -> dedupe against ALL history
+                                         DUPLICATE -> omit
+                                         REVIEW -> inspect evidence; record rationale
+                                         NEW / UPDATE -> rank and report
+                                      -> append story and tool observations
+                                      -> validate + rebuild rollups + tests
+                                      -> one atomic Git publication
 ```
 
-## Candidate identity
+Ranking and freshness are editorial policies in config/radar.yml and
+config/topics.yml. The CLI does not assign credibility scores or infer maturity.
+Source verification remains a producer responsibility: schema validation cannot
+prove a URL's claims are true.
 
-A candidate must be normalized to a stable semantic identity before ranking.
+## Store ownership
 
-Recommended components:
+| Store | Identity and responsibility |
+|---|---|
+| seen-items.jsonl | Immutable event ID; firstSeen/lastReported belong to this event |
+| tools.jsonl | Stable tool ID and discoverability metadata; metadata may be corrected |
+| tool-observations.jsonl | Immutable observation ID; one row per tool/day, chronological per tool |
+| daily Markdown | Coverage evidence; v2 stories require an exact item marker |
+| rollup-state.json | Explicit asOf cutoff; checked derived output uses it |
+| rollup JSON/Markdown | Rebuildable views; never manually edit generated content |
 
-- product or project
-- feature, release, capability or event
-- version or lifecycle milestone when meaningful
+New material updates append a NEW ID and link to an earlier parent via updateOf.
+Parents must precede children and belong to the same canonical product. Preserve
+both the parent's lastReported and the old report. The earlier design's suggestion
+to update lastReported in place is superseded by immutable event rows.
 
-Examples:
+## Backward compatibility
 
-```text
-github-copilot-local-sandbox-ga
-kubernetes-cgroup-v2-failcgroupv1-default-v1-35
-csharp-dev-kit-11-performance-rearchitecture
-```
+All nine original records remain byte-for-byte intact. The legacy schema branch
+permits their IDs and original field names; new IDs require schemaVersion 2.
+The old status field continues to mean lifecycle, including Available/Upcoming.
+coverage is a separate v2 enum. No new maturity/recommendation is inferred from an
+old lifecycle label.
 
-Do not derive identity from article titles. Two different articles about the same event must resolve to the same identity.
+The initial C# Dev Kit observation copies the seed report's explicit Preview/Try
+editorial verdict and states its provenance. The other catalog tools have unknown
+state until a real observation is appended. No collector success or adoption
+measurement is implied by baseline imports.
 
-## Seen history
+## Dedupe and review
 
-`data/seen-items.jsonl` is append-oriented JSON Lines. Each line is one canonical story record.
+Exact identity wins before fuzzy matching or update lineage. Product aliases are
+curated, never substring matches. Event keys must name the capability, not a
+paraphrased headline. An identical source URL alone requests review because one
+release note can describe multiple capabilities. Similarity is deterministic and
+used only to locate likely matches for a producer to inspect.
 
-Minimum record shape:
+Repository validation re-runs dedupe for v2 rows against earlier history. Exact
+duplicates fail; ambiguous NEW records require a dedupeReview linked to the
+matched ID. UPDATE additionally requires primary evidence, materialChange and a
+distinct structured identity. See [DEDUPE.md](DEDUPE.md).
 
-```json
-{
-  "id": "github-copilot-local-sandbox-ga",
-  "product": "GitHub Copilot",
-  "event": "Local Sandboxing GA",
-  "firstSeen": "2026-10-10",
-  "lastReported": "2026-10-10",
-  "status": "GA",
-  "tags": ["AI", "DevTool", "Security"],
-  "sourceType": "official",
-  "sourceUrl": "https://example.com"
-}
-```
+## Rollups
 
-Optional fields may include `version`, `maturity`, `recommendation`, `updateOf`, `changeSummary` and `reportPath`.
+Weekly boundaries follow ISO week-year; monthly boundaries follow calendar
+months. Daily date fields are Asia/Bangkok calendar dates. Periods are clipped at
+asOf, and comparisons use the same elapsed day count, capped at the previous
+period's length. A month is computed directly from event rows, never by adding
+weeks that cross month boundaries.
 
-## Update rule
+Each event contributes once to its product and tags. Tool state uses the most
+recent observation at or before period end. Future rows are ignored. Optional
+star deltas require measurements on both sides. A zero denominator yields null
+in JSON and N/A in prose. Missing metrics stay unknown.
 
-Previously seen stories are skipped by default. A story may return only if there is a material new development.
+Counts measure repository coverage, not market adoption or popularity. A day
+without events may mean no collection run. No assertion of complete collection
+is made. Pure generated counts and separately authored editorial commentary use
+different paths so regeneration does not overwrite editorial reasoning.
 
-When it returns:
+## Validation and publication
 
-- keep the original semantic lineage
-- label the report item `UPDATE`
-- explain exactly what changed
-- update `lastReported`
-- use `updateOf` when a new semantic id is needed for a new milestone
+Validation is read-only. JSON/YAML duplicate keys, invalid schema types/dates,
+non-finite values, missing references, ambiguous aliases and history violations
+fail with context. The whole root is validated before rollup generation writes
+any files. Rollup check compares exact deterministic output and reports stale or
+unexpected artifacts; it never deletes files.
 
-## Ranking
+Publish report + history + observations + rollups in one Git commit. Multiple
+file writes in a local checkout are not a transaction; the Git commit is the
+publication unit. A producer must inspect/refetch a moved main head and re-run
+dedupe before retrying. Never force push or overwrite concurrent data.
 
-Candidate ranking considers:
+CI uses contents:read, disabled persisted checkout credentials, full Git history,
+hash-locked packages and SHA-pinned actions. It checks Linux/Python 3.12 and 3.13
+and Windows/Python 3.12. It has no scheduler, repository-write step or secrets.
 
-1. Impact
-2. Practical usefulness
-3. Novelty
-4. Credibility
-5. Relevance to tracked stack
+## Scaling
 
-High-priority stack relevance includes .NET/backend and Kubernetes/DevOps topics defined in `config/topics.yml`.
-
-## Repository write discipline
-
-- One daily report per date.
-- Avoid rewriting historical reports except to fix factual errors.
-- Append canonical story records only after the story is actually included in a report.
-- Prefer primary sources in persistent records.
-- Keep generated state machine-readable.
-
-## Future extensions
-
-Possible additions without changing the core model:
-
-- weekly and monthly rollups
-- trend scoring by tag and project
-- adoption/watch/skip lifecycle tracking
-- GitHub Actions validation for JSONL/YAML
-- dashboard generation
-- searchable static site
-- embeddings or external database if the corpus becomes large
+History is scanned in memory with deterministic comparisons. That is appropriate
+for a personal corpus; large-scale indexing, embeddings, a database and a UI are
+future choices requiring measured need. This upgrade adds no paid services or
+production infrastructure.

@@ -1,74 +1,95 @@
 # Dev Engineer Radar
 
-Personal engineering intelligence repository for high-signal developer, backend, AI tooling, DevOps and cloud-native updates.
+[![Validate radar](https://github.com/zsitthiporn/dev-engineer-radar/actions/workflows/validate.yml/badge.svg)](https://github.com/zsitthiporn/dev-engineer-radar/actions/workflows/validate.yml)
 
-## Goals
+Personal engineering intelligence for developer tools, AI engineering, .NET/backend,
+Kubernetes/DevOps, GitOps, infrastructure and observability. Reports use Thai prose
+and English product/technical names. Git is the persistent memory and audit trail.
 
-- Discover useful new tools before they become mainstream.
-- Prioritize practical engineering impact over general tech news.
-- Keep daily reports concise and actionable.
-- Prevent repeated coverage of the same underlying story.
-- Build a searchable long-term history of tools, releases and engineering trends.
+## Quick start
 
-## Coverage
+Use Python 3.12 or 3.13 in a virtual environment.
 
-Primary focus:
-
-- AI developer tools, coding agents, MCP, CLI tools and agent runtimes
-- Kubernetes, K3s, Argo CD, Helm, Docker, GitOps and platform engineering
-- C#, .NET, ASP.NET Core, Web API, gRPC, EF Core and SQL Server
-- Git, GitHub, GitLab, CI/CD and observability
-- Infrastructure, architecture, security and databases
-
-## Repository structure
-
-```text
-.
-├── config/
-│   ├── topics.yml          # Topic weights and tracked technologies
-│   └── radar.yml           # Selection, freshness and dedupe policy
-├── data/
-│   └── seen-items.jsonl    # Persistent semantic history for deduplication
-├── docs/
-│   └── ARCHITECTURE.md     # Radar workflow and data model
-├── reports/
-│   └── YYYY/
-│       └── YYYY-MM-DD.md   # Daily radar reports
-├── templates/
-│   └── daily-report.md     # Canonical report shape
-└── README.md
+```console
+python -m venv .venv
+# Activate .venv using your operating system's standard activation command.
+python -m pip install --require-hashes -r requirements.lock
+python -m radar validate
+python -m unittest discover -v
+python -m radar dedupe templates/story.json
+python -m radar rollup --check
 ```
 
-## Dedupe model
+Dedupe prints a JSON decision: `NEW`, `DUPLICATE`, `UPDATE` or `REVIEW`.
+All valid decisions exit 0; inspect the decision, not only the exit status.
+Invalid input/history exits 1. It never appends or changes records.
 
-Each reported story gets a semantic identity based on:
+After recording new coverage, run `python -m radar rollup --as-of YYYY-MM-DD`.
+Commit reports, history, observations, manifest and derived files together.
+See [the producer runbook](docs/RUNBOOK.md) for the complete daily workflow.
+
+## Memory and repository structure
 
 ```text
-product/project + event/feature + version/milestone
+config/                       Topic weights, sources, policy and identity aliases
+schemas/                      JSON Schema 2020-12 for stories, tools and configs
+radar/                        Offline validation, dedupe and rollup CLI
+tests/                        Behavioral tests and CLI integration checks
+data/seen-items.jsonl          Append-only story/event history
+data/tools.jsonl               Stable tool registry
+data/tool-observations.jsonl   Append-only dated evaluation/measurement history
+data/rollup-state.json         Explicit coverage cutoff for reproducible views
+data/rollups/{weekly,monthly}/ Derived JSON counts and historical tool state
+reports/YYYY/YYYY-MM-DD.md     Original daily report path
+reports/weekly/YYYY/           Generated ISO-week Markdown reports
+reports/monthly/YYYY/          Generated calendar-month Markdown reports
+templates/                    Daily, weekly, monthly and JSON record templates
+docs/                         Architecture, dedupe, data contracts and operations
+.github/                      Validation workflow, PR template and Actions updates
 ```
 
-Example:
+## What the system enforces
 
-```text
-github-copilot-local-sandbox-ga
-```
+- Real dates, strict fields/types, unique IDs/tags, finite numbers and valid URLs.
+- Topic weights totaling 100 and duplicate-key rejection for YAML and JSON.
+- Report paths/dates, v2 item markers, tool references and prior update lineage.
+- Semantic identity across product aliases; similarity only requests review.
+- Primary evidence and distinct developments for material updates.
+- Explicit review rationale before publishing ambiguous v2 stories.
+- Append-only story/observation history checked against the prior Git revision.
+- Weekly/monthly output drift checks, with hash-locked Python dependencies and
+  commit-pinned GitHub Actions on Linux and Windows.
 
-A story is not repeated unless there is a material development such as GA/RC, a breaking change, security issue, new benchmark, major adoption, official clarification or a newly available capability. Returning stories are labeled `UPDATE` and must state what changed.
+## Identity and material updates
 
-## Daily workflow
+Identity is `productKey + eventKey + version + milestone`, not the headline.
+`status` remains the product lifecycle (GA, RC, Preview, etc.);
+`coverage` separately describes `NEW` or `UPDATE`.
 
-1. Discover candidate developments from recent primary sources.
-2. Normalize each candidate into a semantic story identity.
-3. Check `data/seen-items.jsonl`.
-4. Drop duplicates without material changes.
-5. Rank remaining stories by impact, usefulness, novelty, credibility and stack relevance.
-6. Write the daily report under `reports/YYYY/YYYY-MM-DD.md`.
-7. Append reported semantic identities to `data/seen-items.jsonl`.
+A new milestone/capability gets a new immutable ID, `updateOf`, a change summary
+and primary evidence. Historical rows are preserved. Ambiguous paraphrases,
+cross-language wording without explicit shared keys and overloaded source URLs
+are routed to review; deterministic matching is not an embedding model.
 
-## Source policy
+Read [DEDUPE.md](docs/DEDUPE.md) and [DATA-CONTRACTS.md](docs/DATA-CONTRACTS.md).
 
-Prefer primary sources: official release notes, engineering blogs, project repositories, Microsoft/.NET sources, Kubernetes/CNCF sources and official documentation. Community sources may be used for discovery, but important claims should be verified against primary sources.
+## Historical trends and limitations
 
-## Report language
+Rollups count recorded unique events, compare equal elapsed calendar days and
+show latest tool state as of the cutoff. Missing/zero growth baselines are N/A.
+Stars/forks are optional measurements, not adoption evidence. Old observation
+dates stay visible, so an unchanged verdict is not presented as a fresh review.
 
-Reports are written in Thai while keeping product names and technical terminology in English.
+The nine seed stories and the original baseline report are retained. Four tools
+are cataloged from that baseline; only C# Dev Kit has an initial observation,
+copied from its historical Preview/Try verdict. No stars or release facts are
+invented. Seed claims were not re-verified as part of this repository upgrade.
+
+`config/radar.yml` describes the intended daily 08:30 Asia/Bangkok schedule.
+This repository provides offline memory utilities and CI validation. The external
+discovery/reporting job must follow the runbook; this change does not install or
+modify that scheduler. CI checks output without publishing news or writing data.
+
+## Contributing and license
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md). Licensed under [Apache-2.0](LICENSE).

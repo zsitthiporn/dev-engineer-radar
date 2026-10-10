@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "kind": "monthly",
+  "period": "2026-10",
+  "asOf": "2026-10-10",
+  "start": "2026-10-01",
+  "end": "2026-10-10",
+  "fullEnd": "2026-10-31",
+  "previousStart": "2026-09-01",
+  "previousEnd": "2026-09-10",
+  "partial": true,
+  "comparison": "equal elapsed days, capped by previous period length",
+  "counts": {
+    "stories": 9,
+    "new": 9,
+    "updates": 0,
+    "daysWithStories": 1
+  },
+  "products": [
+    {
+      "name": "kubernetes",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "argo-cd",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "csharp-dev-kit",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "docker",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "dotnet",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "github-copilot",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "github-copilot-cli",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "postgresql",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    }
+  ],
+  "tags": [
+    {
+      "name": "devtool",
+      "count": 4,
+      "previousCount": 0,
+      "delta": 4,
+      "growthPercent": null
+    },
+    {
+      "name": "ai",
+      "count": 3,
+      "previousCount": 0,
+      "delta": 3,
+      "growthPercent": null
+    },
+    {
+      "name": "kubernetes",
+      "count": 3,
+      "previousCount": 0,
+      "delta": 3,
+      "growthPercent": null
+    },
+    {
+      "name": ".net",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "agent",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "c#",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "devops",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "sandbox",
+      "count": 2,
+      "previousCount": 0,
+      "delta": 2,
+      "growthPercent": null
+    },
+    {
+      "name": "argocd",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "backend",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "cgroup",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "cli",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "database",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "docker",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "gitops",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "linux",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "localmodel",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "memory",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "ollama",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "performance",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "postgresql",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "runtime",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "security",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "swap",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    },
+    {
+      "name": "vscode",
+      "count": 1,
+      "previousCount": 0,
+      "delta": 1,
+      "growthPercent": null
+    }
+  ],
+  "tools": [
+    {
+      "id": "argo-cd",
+      "name": "Argo CD",
+      "recommendation": null,
+      "previousRecommendation": null,
+      "maturity": null,
+      "observedAt": null,
+      "stars": null,
+      "previousStars": null,
+      "starsDelta": null,
+      "starsGrowthPercent": null,
+      "storyCount": 0
+    },
+    {
+      "id": "csharp-dev-kit",
+      "name": "C# Dev Kit",
+      "recommendation": "Try",
+      "previousRecommendation": null,
+      "maturity": "Preview",
+      "observedAt": "2026-10-10",
+      "stars": null,
+      "previousStars": null,
+      "starsDelta": null,
+      "starsGrowthPercent": null,
+      "storyCount": 1
+    },
+    {
+      "id": "docker-sandboxes",
+      "name": "Docker Sandboxes",
+      "recommendation": null,
+      "previousRecommendation": null,
+      "maturity": null,
+      "observedAt": null,
+      "stars": null,
+      "previousStars": null,
+      "starsDelta": null,
+      "starsGrowthPercent": null,
+      "storyCount": 0
+    },
+    {
+      "id": "github-copilot-cli",
+      "name": "GitHub Copilot CLI",
+      "recommendation": null,
+      "previousRecommendation": null,
+      "maturity": null,
+      "observedAt": null,
+      "stars": null,
+      "previousStars": null,
+      "starsDelta": null,
+      "starsGrowthPercent": null,
+      "storyCount": 0
+    }
+  ],
+  "stories": [
+    {
+      "id": "argocd-3-5-4-release",
+      "product": "Argo CD",
+      "event": "3.5.4 release",
+      "coverage": "NEW",
+      "sourceUrl": "https://github.com/argoproj/argo-cd/releases/tag/v3.5.4",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "csharp-dev-kit-11-performance-rearchitecture",
+      "product": "C# Dev Kit",
+      "event": "Version 11 performance rearchitecture",
+      "coverage": "NEW",
+      "sourceUrl": "https://devblogs.microsoft.com/dotnet/faster-lighter-csharp-dev-kit/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "docker-cloud-sandboxes-sandbox-kit",
+      "product": "Docker",
+      "event": "Cloud Sandboxes and Sandbox Kit",
+      "coverage": "NEW",
+      "sourceUrl": "https://www.docker.com/blog/docker-cloud-sandboxes-wearedevelopers-recap/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "dotnet-11-rc1-go-live",
+      "product": ".NET",
+      "event": ".NET 11 RC1 Go-Live",
+      "coverage": "NEW",
+      "sourceUrl": "https://devblogs.microsoft.com/dotnet/dotnet-11-rc-1/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "github-copilot-cli-ollama-local-models",
+      "product": "GitHub Copilot CLI",
+      "event": "Ollama local model discovery",
+      "coverage": "NEW",
+      "sourceUrl": "https://github.blog/changelog/2026-10-07-discover-local-models-in-github-copilot-cli/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "github-copilot-local-sandbox-ga",
+      "product": "GitHub Copilot",
+      "event": "Local Sandboxing GA",
+      "coverage": "NEW",
+      "sourceUrl": "https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "kubernetes-cgroup-v2-failcgroupv1-default-v1-35",
+      "product": "Kubernetes",
+      "event": "cgroup v2 shift and failCgroupV1 default",
+      "coverage": "NEW",
+      "sourceUrl": "https://kubernetes.io/blog/2026/10/06/kubernetes-cgroups-v2-shift/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "kubernetes-node-swap-ga-v1-34",
+      "product": "Kubernetes",
+      "event": "Node Swap GA",
+      "coverage": "NEW",
+      "sourceUrl": "https://kubernetes.io/blog/2026/10/05/scaling-kubernetes-workloads-with-node-swap/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    },
+    {
+      "id": "postgresql-19-release-schedule",
+      "product": "PostgreSQL",
+      "event": "PostgreSQL 19 release schedule",
+      "coverage": "NEW",
+      "sourceUrl": "https://www.postgresql.org/",
+      "reportPath": "reports/2026/2026-10-10.md"
+    }
+  ]
+}

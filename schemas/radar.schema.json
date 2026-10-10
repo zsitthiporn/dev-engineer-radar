@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "radar",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "timezone": {
+      "const": "Asia/Bangkok"
+    },
+    "schedule": {
+      "type": "object",
+      "properties": {
+        "frequency": {
+          "const": "daily"
+        },
+        "local_time": {
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+        }
+      },
+      "required": [
+        "frequency",
+        "local_time"
+      ],
+      "additionalProperties": false
+    },
+    "freshness": {
+      "type": "object",
+      "properties": {
+        "primary_window_hours": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allow_older_when_material": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "primary_window_hours",
+        "allow_older_when_material"
+      ],
+      "additionalProperties": false
+    },
+    "ranking": {
+      "type": "object",
+      "properties": {
+        "formula": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "top_items": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "formula",
+        "top_items"
+      ],
+      "additionalProperties": false
+    },
+    "maturity_values": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "recommendation_values": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "status_values": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "semantic_identity": {
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "slug_style": {
+          "const": "kebab-case"
+        }
+      },
+      "required": [
+        "pattern",
+        "slug_style"
+      ],
+      "additionalProperties": false
+    },
+    "material_update_triggers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "dedupe": {
+      "type": "object",
+      "properties": {
+        "persistent_store": {
+          "const": "data/seen-items.jsonl"
+        },
+        "same_underlying_event_is_duplicate": {
+          "type": "boolean"
+        },
+        "headline_difference_does_not_make_new_story": {
+          "type": "boolean"
+        },
+        "require_material_change_for_repeat": {
+          "type": "boolean"
+        },
+        "repeated_story_label": {
+          "const": "UPDATE"
+        }
+      },
+      "required": [
+        "persistent_store",
+        "same_underlying_event_is_duplicate",
+        "headline_difference_does_not_make_new_story",
+        "require_material_change_for_repeat",
+        "repeated_story_label"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "prefer_primary": {
+          "type": "boolean"
+        },
+        "primary_examples": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "community_sources_for_discovery": {
+          "type": "boolean"
+        },
+        "verify_material_claims_with_primary": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prefer_primary",
+        "primary_examples",
+        "community_sources_for_discovery",
+        "verify_material_claims_with_primary"
+      ],
+      "additionalProperties": false
+    },
+    "report_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "friday_extra": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "enabled",
+        "section"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "timezone",
+    "schedule",
+    "freshness",
+    "ranking",
+    "maturity_values",
+    "recommendation_values",
+    "status_values",
+    "semantic_identity",
+    "material_update_triggers",
+    "dedupe",
+    "sources",
+    "report_sections",
+    "friday_extra"
+  ],
+  "additionalProperties": false
+}

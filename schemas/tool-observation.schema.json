@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "tool-observation",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "toolId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "recommendation": {
+      "enum": [
+        "Try",
+        "Watch",
+        "Skip"
+      ]
+    },
+    "maturity": {
+      "enum": [
+        "Experimental",
+        "Preview",
+        "Production Ready"
+      ]
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://[^/@\\s]+(?:[/?#]|$)"
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "storyIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "stars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "forks": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "toolId",
+    "observedAt",
+    "recommendation",
+    "maturity",
+    "sourceUrl",
+    "notes",
+    "storyIds"
+  ],
+  "additionalProperties": false
+}

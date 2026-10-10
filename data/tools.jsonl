@@ -1,0 +1,4 @@
+{"schemaVersion":1,"id":"csharp-dev-kit","name":"C# Dev Kit","aliases":["CSharp Dev Kit"],"homepage":"https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit","tags":["C#",".NET","DevTool"],"firstSeen":"2026-10-10"}
+{"schemaVersion":1,"id":"docker-sandboxes","name":"Docker Sandboxes","aliases":["Docker Cloud Sandboxes"],"homepage":"https://www.docker.com/products/docker-sandboxes/","tags":["AI","Docker","Sandbox"],"firstSeen":"2026-10-10"}
+{"schemaVersion":1,"id":"github-copilot-cli","name":"GitHub Copilot CLI","aliases":["Copilot CLI"],"homepage":"https://github.com/github/copilot-cli","repositoryUrl":"https://github.com/github/copilot-cli","tags":["AI","DevTool","CLI"],"firstSeen":"2026-10-10"}
+{"schemaVersion":1,"id":"argo-cd","name":"Argo CD","aliases":["ArgoCD"],"homepage":"https://argo-cd.readthedocs.io/en/stable/","repositoryUrl":"https://github.com/argoproj/argo-cd","tags":["GitOps","Kubernetes"],"firstSeen":"2026-10-10"}

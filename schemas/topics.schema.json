@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "topics",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "weights": {
+      "type": "object",
+      "properties": {
+        "ai_developer_tools": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "devops_cloud_native": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "dotnet_backend": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "git_cicd_observability": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "infrastructure_architecture_security": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "ai_developer_tools",
+        "devops_cloud_native",
+        "dotnet_backend",
+        "git_cicd_observability",
+        "infrastructure_architecture_security"
+      ],
+      "additionalProperties": false
+    },
+    "high_priority": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "medium_priority": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 0
+    },
+    "active_discovery": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "low_value_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    }
+  },
+  "required": [
+    "version",
+    "weights",
+    "high_priority",
+    "medium_priority",
+    "active_discovery",
+    "low_value_patterns"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sources",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "source_groups": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "domain": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9.-]+(?:/[a-zA-Z0-9/_.-]+)?$"
+                }
+              },
+              "required": [
+                "name",
+                "domain"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "priority",
+          "sources"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "prefer_primary_source": {
+          "type": "boolean"
+        },
+        "community_for_discovery": {
+          "type": "boolean"
+        },
+        "primary_verification_required_for_top5": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prefer_primary_source",
+        "community_for_discovery",
+        "primary_verification_required_for_top5"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "source_groups",
+    "rules"
+  ],
+  "additionalProperties": false
+}

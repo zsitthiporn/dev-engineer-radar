@@ -1,0 +1,26 @@
+version: 1
+review_threshold: 0.60
+product_aliases:
+  github-copilot:
+    - GitHub Copilot
+    - Copilot
+  github-copilot-cli:
+    - GitHub Copilot CLI
+    - Copilot CLI
+  docker:
+    - Docker
+  kubernetes:
+    - Kubernetes
+    - K8s
+  csharp-dev-kit:
+    - C# Dev Kit
+    - CSharp Dev Kit
+  argo-cd:
+    - Argo CD
+    - ArgoCD
+  dotnet:
+    - .NET
+    - dotnet
+  postgresql:
+    - PostgreSQL
+    - Postgres

@@ -1,0 +1,3 @@
+# Direct dependencies. Install requirements.lock for reproducible environments.
+jsonschema==4.25.1
+PyYAML==6.0.3

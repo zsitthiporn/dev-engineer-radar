@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "identity",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "review_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "product_aliases": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "uniqueItems": true,
+        "minItems": 1
+      }
+    }
+  },
+  "required": [
+    "version",
+    "review_threshold",
+    "product_aliases"
+  ],
+  "additionalProperties": false
+}

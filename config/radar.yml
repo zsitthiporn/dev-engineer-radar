@@ -1,0 +1,83 @@
+version: 1
+
+timezone: Asia/Bangkok
+schedule:
+  frequency: daily
+  local_time: "08:30"
+
+freshness:
+  primary_window_hours: 72
+  allow_older_when_material: true
+
+ranking:
+  formula:
+    - impact
+    - practical_usefulness
+    - novelty
+    - credibility
+    - stack_relevance
+  top_items: 5
+
+maturity_values:
+  - Experimental
+  - Preview
+  - Production Ready
+
+recommendation_values:
+  - Try
+  - Watch
+  - Skip
+
+status_values:
+  - NEW
+  - UPDATE
+
+semantic_identity:
+  pattern: "product-or-project + event-or-feature + version-or-milestone"
+  slug_style: kebab-case
+
+material_update_triggers:
+  - new GA or RC milestone
+  - new major or meaningful minor release
+  - breaking change
+  - security issue or advisory
+  - new benchmark with engineering implications
+  - major adoption or ecosystem integration
+  - official clarification that changes prior understanding
+  - newly available capability
+  - material performance or operational change
+
+dedupe:
+  persistent_store: data/seen-items.jsonl
+  same_underlying_event_is_duplicate: true
+  headline_difference_does_not_make_new_story: true
+  require_material_change_for_repeat: true
+  repeated_story_label: UPDATE
+
+sources:
+  prefer_primary: true
+  primary_examples:
+    - official release notes
+    - official engineering blogs
+    - official documentation
+    - project GitHub repositories
+    - Microsoft .NET blog
+    - Kubernetes and CNCF project sources
+  community_sources_for_discovery: true
+  verify_material_claims_with_primary: true
+
+report_sections:
+  - "🔥 Top 5 — Must Know"
+  - "🆕 New Tools Worth Trying"
+  - "☸️ DevOps / Kubernetes Radar"
+  - "🤖 AI Engineering Radar"
+  - "🟣 .NET / Backend Engineering Radar"
+  - "💻 Runtime / Platform Changes"
+  - "👀 Watch List"
+  - "🧰 Tool of the Day"
+  - "🧪 Try This Today"
+  - "🎯 Relevant to Your Stack"
+
+friday_extra:
+  enabled: true
+  section: Weekly Wrap-up

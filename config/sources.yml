@@ -1,0 +1,56 @@
+version: 1
+
+source_groups:
+  dotnet_backend:
+    priority: high
+    sources:
+      - name: .NET Blog
+        domain: devblogs.microsoft.com/dotnet
+      - name: .NET GitHub
+        domain: github.com/dotnet
+      - name: EF Core GitHub
+        domain: github.com/dotnet/efcore
+      - name: ASP.NET Core GitHub
+        domain: github.com/dotnet/aspnetcore
+      - name: gRPC for .NET
+        domain: github.com/grpc/grpc-dotnet
+      - name: Microsoft SQL Server Blog
+        domain: techcommunity.microsoft.com
+  devops_cloud_native:
+    priority: high
+    sources:
+      - name: Kubernetes
+        domain: kubernetes.io
+      - name: CNCF
+        domain: cncf.io
+      - name: Argo Project
+        domain: github.com/argoproj
+      - name: K3s
+        domain: github.com/k3s-io/k3s
+      - name: Docker
+        domain: docker.com
+      - name: Helm
+        domain: helm.sh
+  ai_developer_tools:
+    priority: high
+    sources:
+      - name: GitHub Changelog
+        domain: github.blog/changelog
+      - name: GitHub Trending and Releases
+        domain: github.com
+      - name: Docker Engineering
+        domain: docker.com
+  observability:
+    priority: medium
+    sources:
+      - name: OpenTelemetry
+        domain: opentelemetry.io
+      - name: Grafana Labs
+        domain: grafana.com
+      - name: Prometheus
+        domain: prometheus.io
+
+rules:
+  prefer_primary_source: true
+  community_for_discovery: true
+  primary_verification_required_for_top5: true

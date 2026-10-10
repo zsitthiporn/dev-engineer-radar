@@ -1,0 +1,65 @@
+version: 1
+
+weights:
+  ai_developer_tools: 30
+  devops_cloud_native: 25
+  dotnet_backend: 25
+  git_cicd_observability: 10
+  infrastructure_architecture_security: 10
+
+high_priority:
+  - C#
+  - .NET
+  - ASP.NET Core
+  - Web API
+  - gRPC
+  - EF Core
+  - SQL Server
+  - Kubernetes
+  - K3s
+  - Argo CD
+  - Helm
+  - Docker
+  - GitOps
+  - GitLab
+  - GitHub
+  - MCP
+  - Coding Agents
+  - Agent Sandboxing
+  - OpenTelemetry
+
+medium_priority:
+  - PostgreSQL
+  - Next.js
+  - TypeScript
+  - Prometheus
+  - Grafana
+  - Loki
+  - Terraform
+  - OpenTofu
+  - RabbitMQ
+  - .NET Aspire
+  - Dapr
+
+active_discovery:
+  - CLI tools
+  - open-source developer tools
+  - self-hosted tools
+  - AI coding agents
+  - MCP servers
+  - agent runtimes
+  - agent sandboxes
+  - Kubernetes utilities
+  - GitOps tools
+  - observability tools
+  - database tooling
+  - API tooling
+  - performance tooling
+
+low_value_patterns:
+  - trivial syntax additions
+  - routine package updates
+  - minor patches without meaningful operational impact
+  - marketing-only announcements
+  - duplicate coverage
+  - speculative hype without technical substance

@@ -7,11 +7,12 @@ import os
 import re
 import socket
 import sys
+import unicodedata
 from http.client import HTTPException
 from datetime import date
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlsplit
 from urllib.request import Request, HTTPRedirectHandler, build_opener
 
 from radar.site import DEFAULT_URL, publications, public_url
@@ -35,20 +36,57 @@ def digest(root, day, site_url=DEFAULT_URL):
             "title": "Dev Engineer Radar", "url": site_url, "items": items}
 
 
+def card_text(value, limit=None):
+    """Plain editorial text inside Teams' limited Markdown dialect."""
+    value = " ".join(value.split())
+    if limit and len(value) > limit:
+        end = limit - 1
+        # Avoid separating a Thai base letter from its following vowel/tone marks.
+        while end and unicodedata.category(value[end]).startswith("M"):
+            end -= 1
+        value = value[:end].rstrip() + "…"
+    return re.sub(r"([\\`*_\[\]()!<>])", r"\\\1", value)
+
+
 def teams_payload(row):
-    # Bound summaries and card count; include the full digest identity in the message.
-    body = [{"type": "TextBlock", "text": f"Dev Engineer Radar · {row['date']}",
-             "weight": "Bolder", "size": "Large", "wrap": True},
-            {"type": "TextBlock", "text": f"{len(row['items'])} ข่าวคัดแล้ว · อ่านรายละเอียดและ references บนเว็บ", "wrap": True}]
-    for item in row["items"][:5]:
-        body.extend([{"type": "TextBlock", "text": item["title"], "weight": "Bolder", "wrap": True},
-                     {"type": "TextBlock", "text": item["summary"][:220], "wrap": True},
-                     {"type": "TextBlock", "text": item["url"], "wrap": True}])
-    body.append({"type": "TextBlock", "text": row["deliveryId"], "isSubtle": True, "size": "Small", "wrap": True})
+    counts = " · ".join(f"{label} {sum(i['recommendation'] == label for i in row['items'])}"
+                        for label in ("Try", "Watch", "Skip")
+                        if any(i["recommendation"] == label for i in row["items"]))
+    body = [{"type": "Container", "style": "emphasis", "bleed": True, "items": [
+        {"type": "TextBlock", "text": "ENGINEERING BRIEF", "size": "Small",
+         "weight": "Bolder", "color": "Accent", "wrap": True},
+        {"type": "TextBlock", "text": row["title"], "size": "Large",
+         "weight": "Bolder", "spacing": "Small", "wrap": True},
+        {"type": "TextBlock", "text": f"{row['date']}  /  {len(row['items'])} ข่าวคัดแล้ว",
+         "size": "Small", "isSubtle": True, "spacing": "Small", "wrap": True},
+        {"type": "TextBlock", "text": counts or "ยังไม่มีข่าวในฉบับนี้",
+         "size": "Small", "spacing": "Small", "wrap": True}]}]
+    for index, item in enumerate(row["items"], 1):
+        verdict = item["recommendation"]
+        # Encode Markdown delimiters without changing the generic digest's URL.
+        link = urlsplit(item["url"])
+        link = link._replace(path=quote(link.path, safe="/%:@!$&'*+,-.;=~"),
+                             query=quote(link.query, safe="%:@!$&'*+,-.;=/?~"),
+                             fragment=quote(link.fragment, safe="%:@!$&'*+,-.;=/?~")).geturl()
+        body.append({"type": "Container", "separator": True, "spacing": "Medium", "items": [
+            {"type": "ColumnSet", "columns": [
+                {"type": "Column", "width": "stretch", "items": [
+                    {"type": "TextBlock", "text": f"[{index:02d} · {card_text(item['title'])}]({link})",
+                     "weight": "Bolder", "wrap": True, "maxLines": 2}]},
+                {"type": "Column", "width": "auto", "spacing": "Small", "items": [
+                    {"type": "TextBlock", "text": verdict, "size": "Small", "weight": "Bolder",
+                     "color": {"Try": "Good", "Watch": "Warning", "Skip": "Default"}[verdict]}]}]},
+            {"type": "TextBlock", "text": card_text(item["summary"], 140), "wrap": True,
+             "maxLines": 2, "size": "Small", "spacing": "Small"}]})
+    body.append({"type": "TextBlock", "text": "แตะหัวข้อเพื่ออ่านต่อ · รายละเอียดและ primary sources อยู่บนเว็บ",
+                 "size": "Small", "isSubtle": True, "wrap": True, "separator": True, "spacing": "Medium"})
     return {"type": "message", "attachments": [{"contentType": "application/vnd.microsoft.card.adaptive",
             "contentUrl": None, "content": {"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
             "type": "AdaptiveCard", "version": "1.2", "body": body,
-            "actions": [{"type": "Action.OpenUrl", "title": "อ่านบน Radar", "url": row["url"]}]}}]}
+            "msteams": {"width": "Full"},
+            "speak": f"Dev Engineer Radar ฉบับ {row['date']} มี {len(row['items'])} ข่าว {counts}",
+            "fallbackText": f"{row['title']} · {row['date']} · {len(row['items'])} ข่าว\n{row['url']}\n{row['deliveryId']}",
+            "actions": [{"type": "Action.OpenUrl", "title": "อ่านข่าวทั้งหมดบน Radar →", "url": row["url"]}]}}]}
 
 
 def validate_destination(value, resolver=socket.getaddrinfo):

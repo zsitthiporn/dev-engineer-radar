@@ -32,9 +32,61 @@ class NotificationTests(unittest.TestCase):
         self.assertEqual(payload["type"], "message")
         self.assertEqual(card["contentType"], "application/vnd.microsoft.card.adaptive")
         self.assertEqual(card["content"]["type"], "AdaptiveCard")
-        self.assertEqual(len(card["content"]["body"]), 18)
+        self.assertEqual(card["content"]["version"], "1.2")
         self.assertLess(len(json.dumps(payload, ensure_ascii=False).encode()), 24_000)
         self.assertIn(row["deliveryId"], json.dumps(payload))
+
+    def test_every_article_has_a_named_link_and_compact_summary(self):
+        row = digest(ROOT, "2026-10-10")
+        before = json.dumps(row, ensure_ascii=False, sort_keys=True)
+        card = teams_payload(row)["attachments"][0]["content"]
+        stories = card["body"][1:-1]
+        self.assertEqual(len(stories), len(row["items"]))
+        for story, item in zip(stories, row["items"]):
+            self.assertTrue(story["separator"])
+            title = story["items"][0]["columns"][0]["items"][0]
+            self.assertIn(item["url"], title["text"])
+            self.assertNotEqual(title["text"], item["url"])
+            summary = story["items"][1]
+            self.assertTrue(summary["wrap"])
+            self.assertEqual(summary["maxLines"], 2)
+            self.assertLessEqual(len(summary["text"]), 180)
+            verdict = story["items"][0]["columns"][1]["items"][0]
+            self.assertEqual(verdict["text"], item["recommendation"])
+        # Implementation changes must not alter the generic digest identity.
+        self.assertEqual(json.dumps(row, ensure_ascii=False, sort_keys=True), before)
+
+    def test_article_text_cannot_inject_markdown_links(self):
+        row = digest(ROOT, "2026-10-10")
+        row["items"][0]["title"] = "C# [tool](https://untrusted.example/)"
+        row["items"][0]["summary"] = "![image](https://untrusted.example/)\n" + "ไทย " * 100
+        card = teams_payload(row)["attachments"][0]["content"]
+        story = card["body"][1]
+        title = story["items"][0]["columns"][0]["items"][0]["text"]
+        self.assertIn(r"\[tool\]\(https://untrusted.example/\)", title)
+        summary = story["items"][1]["text"]
+        self.assertIn(r"\!\[image\]", summary)
+        self.assertNotIn("\n", summary)
+        self.assertTrue(summary.endswith("…"))
+
+    def test_markdown_url_delimiters_are_encoded_without_mutating_digest(self):
+        row = digest(ROOT, "2026-10-10", "https://example.com/radar)v2/")
+        original = row["items"][0]["url"]
+        card = teams_payload(row)["attachments"][0]["content"]
+        title = card["body"][1]["items"][0]["columns"][0]["items"][0]["text"]
+        self.assertIn("https://example.com/radar%29v2/articles/", title)
+        self.assertEqual(row["items"][0]["url"], original)
+
+    def test_oversized_edition_fails_without_posting_or_dropping_articles(self):
+        from unittest.mock import Mock
+        row = digest(ROOT, "2026-10-10")
+        row["items"] *= 30
+        payload = teams_payload(row)
+        self.assertEqual(len(payload["attachments"][0]["content"]["body"][1:-1]), 180)
+        opener = Mock()
+        with patch("radar.notifications.validate_destination"), self.assertRaisesRegex(ValueError, "24 KB"):
+            send("https://example.com/", payload, opener)
+        opener.open.assert_not_called()
 
     def test_dry_run_does_not_read_secrets_or_network(self):
         # Replace this module's OS handle; argparse may legitimately read LANGUAGE.

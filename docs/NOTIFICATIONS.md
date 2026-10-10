@@ -14,9 +14,32 @@ incoming Adaptive Card to the chosen chat. Add a co-owner so delivery does not
 depend on one user's account staying active.
 
 The sender implements the `type: message`/Adaptive Card attachment envelope,
-version 1.2, wrapped Thai text, five article previews, web link and delivery ID.
+version 1.2, wrapped Thai text and a compact preview of **every** edition article.
 Confirm that the chosen template consumes `attachments[].content`; adjust the
 workflow mapping rather than assume every custom trigger accepts the same body.
+
+### Card presentation
+
+An emphasized masthead shows the edition, article count and Try/Watch/Skip counts.
+Each article has a numbered, clickable headline, a text verdict with a semantic
+color, a separator, and a summary limited to 140 characters and two displayed
+lines. Headlines also wrap to at most two lines. Long summaries use an ellipsis;
+the complete text and primary references remain on the linked article. Editorial
+text escapes inline Markdown syntax, and URL delimiters are percent-encoded before
+building links. The generic JSON digest and its identity remain unchanged.
+
+`msteams.width = Full` requests more space on desktop; stretch/auto columns keep
+the verdict beside the heading. Teams controls fonts, colors, spacing and theme:
+there is no custom CSS/HTML support for Adaptive Cards. Use semantic colors rather
+than hardcoded RGB values, and retain verdict text so color is not the only cue.
+No remote decorative image is required. Test on Teams desktop and mobile because
+hosts can render Markdown and line limits differently. Schema/Designer validation
+does not prove actual Workflows delivery or mobile rendering.
+
+No articles are silently omitted to fit the message. If an edition exceeds the
+24 KB sender budget, sending fails before the POST; split it into explicitly
+reviewed messages or use the website. This adapter does not automatically split
+an edition, which could complicate duplicate handling.
 
 For this URL-only adapter, choose a template authentication setting that permits
 the external sender (often **Anyone**); the signed URL acts as a bearer secret.
@@ -61,7 +84,8 @@ network-level DNS-rebinding guarantee. Missing secrets fail before sending.
 No articles for an edition means no messages are sent.
 
 A digest has a deterministic `deliveryId` based on its date and full public content.
-The ID is visible in Teams and in JSON for receiver-side idempotency. The sender
+The ID is in JSON, send logs and the Adaptive Card's plain-text fallback; it is
+not shown in the normal card layout. The sender
 does not promise exactly-once delivery or persist a delivery ledger. A 2xx response
 only acknowledges the webhook, not that Teams successfully rendered the message.
 No automatic POST retries: timeout/connection errors can mean the message arrived.
@@ -79,3 +103,5 @@ workflow/chat and a deliberate test send.
 
 - [Teams incoming webhooks via Workflows](https://support.microsoft.com/en-us/workflows/send-messages-in-teams-using-incoming-webhooks)
 - [Microsoft webhook/Adaptive Card documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using)
+- [Teams card formatting, Markdown and full-width cards](https://learn.microsoft.com/en-us/microsoftteams/platform/task-modules-and-cards/cards/cards-format)
+- [Adaptive Cards documentation and design guidance](https://adaptivecards.microsoft.com/)

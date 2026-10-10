@@ -57,3 +57,7 @@ jobs:
         run: python -m unittest discover -v
       - name: Check generated rollups
         run: python -m radar rollup --check
+      - name: Build and verify public projection
+        run: |
+          python -m radar.site --output dist
+          python web/check_site.py dist

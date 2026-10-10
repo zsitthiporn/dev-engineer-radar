@@ -1,0 +1,59 @@
+name: Validate radar
+"on":
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: radar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    name: Validate (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.12"
+          - os: ubuntu-latest
+            python: "3.13"
+          - os: windows-latest
+            python: "3.12"
+    env:
+      PYTHONUTF8: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - name: Install locked dependencies
+        run: python -m pip install --require-hashes -r requirements.lock
+      - name: Validate schemas and references
+        run: python -m radar validate
+      - name: Enforce append-only history
+        shell: python
+        run: |
+          import os
+          import subprocess
+          import sys
+          base = os.environ.get("BASE_SHA", "")
+          if base and base != "0" * 40:
+              subprocess.run([sys.executable, "-m", "radar", "validate", "--base", base], check=True)
+      - name: Test
+        run: python -m unittest discover -v
+      - name: Check generated rollups
+        run: python -m radar rollup --check

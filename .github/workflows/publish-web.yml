@@ -8,7 +8,7 @@ name: Build and publish public web
 permissions:
   contents: read
 concurrency:
-  group: public-web-${{ github.ref }}
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
@@ -36,8 +36,23 @@ jobs:
           path: dist/
           include-hidden-files: true
           retention-days: 7
-      - name: Sync approved files to public deploy repository
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.WEB_PUBLISH_ENABLED == 'true'
-        env:
-          WEB_PUBLISH_TOKEN: ${{ secrets.WEB_PUBLISH_TOKEN }}
-        run: python -m radar.publish dist
+      - name: Upload verified site for GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event.repository.private == false
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: dist/
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified site
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

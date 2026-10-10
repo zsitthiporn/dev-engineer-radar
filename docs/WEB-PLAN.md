@@ -1,13 +1,25 @@
 # Public reading experience and delivery plan
 
-User-approved scope: a clean Thai engineering publication on GitHub Pages, a separate public `zsitthiporn/dev-engineer-radar-web` repository for GitHub Free, private intelligence storage, and Teams group-chat delivery via Workflows. No new dependencies.
+Current owner-approved scope: a public `zsitthiporn/dev-engineer-radar` repository,
+GitHub Pages from that same repository, curated Thai articles and Teams group-chat
+delivery via Workflows. No new dependencies. Repository/history visibility is public;
+website projection remains an editorial selection, not a repository privacy control.
 
-1. Recheck primary sources and curate explicit public records; preserve legacy history.
-2. Add strict publication schema, static rendering, responsive reading/search/coverage/archive views, RSS and JSON feeds. Export only projected approved content.
-3. Add dry-run-first Teams/JSON webhook adapters and manual delivery workflows. Configure real destinations only through owner-managed GitHub Secrets.
-4. Validate/tests/build in private CI; publish only generated site files across repositories with a narrowly scoped owner-managed token. Public CI verifies checksums and deploys Pages.
-5. Verify desktop/mobile, public path handling, privacy boundary and payload behavior; focused adversarial review; commit to main in coherent groups; verify remote CI and deployed website.
+1. Preserve original reports/history and curate explicit source-checked articles.
+2. Keep strict schemas, responsive reading/search/coverage/archive, RSS/JSON feeds.
+3. Use dry-run-first Teams/JSON delivery with owner-managed GitHub Secrets.
+4. Build/test/validate on PRs and main; deploy only verified `dist/` from public main
+   through the `github-pages` environment and GitHub's built-in authentication.
+5. Verify new destination links, export boundaries, workflow permission/branch guards,
+   tests and deployed website; review the migration; commit orderly changes to main.
 
-Vector search is deferred: current six curated articles fit local text/tag search. Later index public article chunks, attach source/article IDs and dates, and evaluate relevance against a labeled query set. Embedding matches may suggest duplicate review; they never erase event history or replace structured identity.
+The separate web repository, cross-repository publisher/token and its Pages bootstrap
+are no longer part of production. The owner changes source visibility and chooses
+Pages Source → GitHub Actions. Retired repository files remain untouched.
 
-Live dependencies: owner sets Pages source to GitHub Actions, cross-repository publication token and Teams Workflows group-chat destination. Do not fabricate a configured collector or a successful live notification.
+Vector search is deferred: six curated articles fit local text/tag search. A later
+index should retain article/source IDs and dates, with evaluated relevance. Embeddings
+may suggest review but cannot erase event history or replace structured identity.
+
+Teams still requires owner configuration and a deliberate test send. No collector
+or external ChatGPT schedule is installed or changed by the publication workflow.

@@ -1,5 +1,6 @@
 import json
 import unittest
+from xml.etree import ElementTree as ET
 
 from radar.site import build, publications, public_url
 from radar.validation import read_jsonl
@@ -27,6 +28,25 @@ class PublicSiteTests(unittest.TestCase):
         second = self.root.parent / "second"
         build(self.root, second)
         self.assertEqual((self.out / "manifest.json").read_bytes(), (second / "manifest.json").read_bytes())
+
+    def test_public_links_follow_the_single_repository_destination(self):
+        from radar.notifications import digest, teams_payload
+        expected = "https://zsitthiporn.github.io/dev-engineer-radar/"
+        build(self.root, self.out)
+        feed = json.loads((self.out / "feed.json").read_text(encoding="utf-8"))
+        self.assertEqual(feed["siteUrl"], expected)
+        for item in feed["items"]:
+            self.assertEqual(item["url"], expected + "articles/" + item["id"] + "/")
+            page = (self.out / "articles" / item["id"] / "index.html").read_text(encoding="utf-8")
+            self.assertIn('rel="canonical" href="' + item["url"] + '"', page)
+        rss = ET.fromstring((self.out / "feed.xml").read_text(encoding="utf-8"))
+        self.assertEqual(rss.findtext("channel/link"), expected)
+        self.assertEqual({e.text for e in rss.findall("channel/item/link")}, {i["url"] for i in feed["items"]})
+        digest_row = digest(self.root, "2026-10-10")
+        self.assertTrue(all(i["url"].startswith(expected + "articles/") for i in digest_row["items"]))
+        self.assertNotIn("dev-engineer-radar-web", json.dumps(teams_payload(digest_row)))
+        for path in ("sitemap.xml", "robots.txt", "404.html"):
+            self.assertNotIn("dev-engineer-radar-web", (self.out / path).read_text(encoding="utf-8"))
 
     def test_html_is_escaped(self):
         rows = read_jsonl(self.root / "data/publications.jsonl")

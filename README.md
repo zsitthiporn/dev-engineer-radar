@@ -6,9 +6,10 @@ Personal engineering intelligence for developer tools, AI engineering, .NET/back
 Kubernetes/DevOps, GitOps, infrastructure and observability. Reports use Thai prose
 and English product/technical names. Git is the persistent memory and audit trail.
 
-Public reading site: [Dev Engineer Radar](https://zsitthiporn.github.io/dev-engineer-radar-web/).
-The public [deploy repository](https://github.com/zsitthiporn/dev-engineer-radar-web)
-contains only the reviewed web projection; this intelligence repository remains private.
+Reading site: [Dev Engineer Radar](https://zsitthiporn.github.io/dev-engineer-radar/).
+This repository is the public source of truth and deploys its reviewed web projection
+directly to GitHub Pages. Repository files and Git history are publicly readable;
+the website still includes only explicitly curated articles.
 
 ## Quick start
 
@@ -51,7 +52,7 @@ reports/monthly/YYYY/          Generated calendar-month Markdown reports
 templates/                    Daily, weekly, monthly and JSON record templates
 docs/                         Architecture, dedupe, data contracts and operations
 .github/                      Validation workflow, PR template and Actions updates
-web/                          Static design assets, standalone export check and Pages bootstrap
+web/                          Static design assets and standalone export check
 ```
 
 ## What the system enforces
@@ -97,8 +98,8 @@ remaining legacy stories are not published on the website.
 This repository provides offline memory utilities and CI validation. The external
 discovery/reporting job must follow the runbook; this change does not install or
 modify that scheduler. CI validates memory and builds the reviewed public site.
-Cross-repository auto-publication activates only after the owner configures its
-scoped token and `WEB_PUBLISH_ENABLED` variable.
+Main builds deploy directly after the owner makes this repository public and sets
+Settings → Pages → Source to GitHub Actions. No cross-repository token is needed.
 
 ## Website and distribution
 

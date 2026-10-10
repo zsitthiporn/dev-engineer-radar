@@ -22,7 +22,7 @@ For this URL-only adapter, choose a template authentication setting that permits
 the external sender (often **Anyone**); the signed URL acts as a bearer secret.
 If organization policy requires authenticated callers, use a separately approved
 Entra-authenticated adapter instead. Never weaken tenant policy just to use this
-adapter. Store the URL directly in the private repo's Actions secret
+adapter. Store the URL directly in this repo's Actions secret
 `RADAR_TEAMS_WEBHOOK`. Do not send it in chat, commit it, or put it into the frontend.
 Rotate the workflow URL if exposed. Nothing reads an owner's credential files.
 

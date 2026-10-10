@@ -1,4 +1,4 @@
-"""Build an allowlisted public reading experience. Never copy the private checkout."""
+"""Build an allowlisted reading experience. Never copy the repository checkout."""
 import argparse
 import hashlib
 import html
@@ -19,7 +19,7 @@ TOPICS = {
     "git_cicd_observability": ("Git, CI/CD & Observability", "การส่งมอบซอฟต์แวร์และมองเห็นพฤติกรรมระบบ", "CI"),
     "infrastructure_architecture_security": ("Architecture & Security", "Infrastructure, distributed systems และขอบเขตความปลอดภัย", "SYS"),
 }
-DEFAULT_URL = "https://zsitthiporn.github.io/dev-engineer-radar-web/"
+DEFAULT_URL = "https://zsitthiporn.github.io/dev-engineer-radar/"
 ASSETS = ("style.css", "app.js", "mark.svg")
 
 

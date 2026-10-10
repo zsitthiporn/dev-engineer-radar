@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explicit public editorial projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "visibility", "title", "summary", "topic", "tags", "publishedAt", "editionDate", "reviewedAt", "recommendation", "maturity", "effort", "sections", "references"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 120},
+    "visibility": {"const": "public"},
+    "title": {"type": "string", "minLength": 5, "maxLength": 180},
+    "summary": {"type": "string", "minLength": 20, "maxLength": 650},
+    "topic": {"enum": ["ai_developer_tools", "devops_cloud_native", "dotnet_backend", "git_cicd_observability", "infrastructure_architecture_security"]},
+    "tags": {"type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 50}},
+    "publishedAt": {"type": "string", "format": "date"},
+    "editionDate": {"type": "string", "format": "date"},
+    "reviewedAt": {"type": "string", "format": "date"},
+    "recommendation": {"enum": ["Try", "Watch", "Skip"]},
+    "maturity": {"type": "string", "minLength": 1, "maxLength": 60},
+    "effort": {"type": "string", "minLength": 1, "maxLength": 60},
+    "sections": {"type": "array", "minItems": 3, "maxItems": 8, "items": {"type": "object", "additionalProperties": false, "required": ["heading", "text", "kind"], "properties": {"heading": {"type": "string", "minLength": 1, "maxLength": 80}, "text": {"type": "string", "minLength": 10, "maxLength": 1500}, "kind": {"enum": ["fact", "analysis", "action"]}}}},
+    "references": {"type": "array", "minItems": 1, "maxItems": 8, "items": {"type": "object", "additionalProperties": false, "required": ["title", "url", "publisher"], "properties": {"title": {"type": "string", "minLength": 1, "maxLength": 180}, "url": {"type": "string", "format": "uri", "pattern": "^https://"}, "publisher": {"type": "string", "minLength": 1, "maxLength": 80}}}}
+  }
+}

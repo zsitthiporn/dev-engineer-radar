@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "csharp-dev-kit-11-performance-rearchitecture",
+  "visibility": "public",
+  "title": "C# Dev Kit 11: เปิด solution ใหญ่ได้ไวขึ้น ด้วยสถาปัตยกรรมใหม่",
+  "summary": "Microsoft ปรับ project loading, cache และใช้ Native AOT ใน server ของ Dev Kit รอบนี้น่าจับตาสำหรับทีม .NET ที่ทำงานกับ solution ขนาดใหญ่",
+  "topic": "dotnet_backend",
+  "tags": [
+    "C#",
+    ".NET",
+    "Performance",
+    "VS Code"
+  ],
+  "publishedAt": "2026-10-06",
+  "editionDate": "2026-10-10",
+  "reviewedAt": "2026-10-10",
+  "recommendation": "Try",
+  "maturity": "Pre-release",
+  "effort": "15–30 นาที",
+  "sections": [
+    {
+      "heading": "มีอะไรเปลี่ยน",
+      "text": "Dev Kit 11 รวม internal services เป็น server ที่ใช้ Native AOT โหลด active file ก่อน และใช้ project cache เพื่อลดงานซ้ำ เพิ่มประสบการณ์แก้ไขไฟล์ MSBuild และ C# Doctor สำหรับตรวจปัญหาสภาพแวดล้อม รุ่นนี้ยังอยู่ใน pre-release",
+      "kind": "fact"
+    },
+    {
+      "heading": "ทำไมทีม .NET ควรสนใจ",
+      "text": "เวลารอ tooling ส่งผลต่อรอบแก้ไขและทดสอบ โดยเฉพาะ solution ใหญ่หรือหลาย worktree การลดเวลาโหลดจึงอาจมีประโยชน์ต่อทั้งนักพัฒนาและ coding agent",
+      "kind": "analysis"
+    },
+    {
+      "heading": "ข้อควรอ่านก่อนตีความ benchmark",
+      "text": "ผลในบทความเป็นการทดสอบของ Microsoft กับ solution ที่เลือก การลด memory วัดเฉพาะ Dev Kit server ไม่รวม Roslyn หรือ VS Code จึงไม่ใช่การลด memory ทั้ง IDE ในอัตราเดียวกัน",
+      "kind": "fact"
+    },
+    {
+      "heading": "ทดลองกับ solution ของคุณ",
+      "text": "เปรียบเทียบ stable กับ pre-release บน solution เดียว วัดครั้งแรกและครั้งถัดไปแยกกัน ตรวจ build, test discovery และ responsiveness แล้วบันทึก SDK, extension version และขนาด solution เพื่อเทียบผลได้",
+      "kind": "action"
+    }
+  ],
+  "references": [
+    {
+      "title": "Version 11 performance rearchitecture",
+      "url": "https://devblogs.microsoft.com/dotnet/faster-lighter-csharp-dev-kit/",
+      "publisher": "Microsoft .NET Blog"
+    }
+  ]
+}

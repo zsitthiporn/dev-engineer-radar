@@ -9,3 +9,4 @@ htmlcov/
 Thumbs.db
 work/
 *.log
+dist/

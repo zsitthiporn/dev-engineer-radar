@@ -6,6 +6,10 @@ Personal engineering intelligence for developer tools, AI engineering, .NET/back
 Kubernetes/DevOps, GitOps, infrastructure and observability. Reports use Thai prose
 and English product/technical names. Git is the persistent memory and audit trail.
 
+Public reading site: [Dev Engineer Radar](https://zsitthiporn.github.io/dev-engineer-radar-web/).
+The public [deploy repository](https://github.com/zsitthiporn/dev-engineer-radar-web)
+contains only the reviewed web projection; this intelligence repository remains private.
+
 ## Quick start
 
 Use Python 3.12 or 3.13 in a virtual environment.
@@ -36,6 +40,7 @@ schemas/                      JSON Schema 2020-12 for stories, tools and configs
 radar/                        Offline validation, dedupe and rollup CLI
 tests/                        Behavioral tests and CLI integration checks
 data/seen-items.jsonl          Append-only story/event history
+data/publications.jsonl        Explicitly reviewed public editorial records
 data/tools.jsonl               Stable tool registry
 data/tool-observations.jsonl   Append-only dated evaluation/measurement history
 data/rollup-state.json         Explicit coverage cutoff for reproducible views
@@ -46,6 +51,7 @@ reports/monthly/YYYY/          Generated calendar-month Markdown reports
 templates/                    Daily, weekly, monthly and JSON record templates
 docs/                         Architecture, dedupe, data contracts and operations
 .github/                      Validation workflow, PR template and Actions updates
+web/                          Static design assets, standalone export check and Pages bootstrap
 ```
 
 ## What the system enforces
@@ -83,12 +89,39 @@ dates stay visible, so an unchanged verdict is not presented as a fresh review.
 The nine seed stories and the original baseline report are retained. Four tools
 are cataloged from that baseline; only C# Dev Kit has an initial observation,
 copied from its historical Preview/Try verdict. No stars or release facts are
-invented. Seed claims were not re-verified as part of this repository upgrade.
+invented. Legacy records remain unchanged. Six stories were separately rechecked
+against primary sources on 2026-10-10 and curated into public Thai articles; the
+remaining legacy stories are not published on the website.
 
 `config/radar.yml` describes the intended daily 08:30 Asia/Bangkok schedule.
 This repository provides offline memory utilities and CI validation. The external
 discovery/reporting job must follow the runbook; this change does not install or
-modify that scheduler. CI checks output without publishing news or writing data.
+modify that scheduler. CI validates memory and builds the reviewed public site.
+Cross-repository auto-publication activates only after the owner configures its
+scoped token and `WEB_PUBLISH_ENABLED` variable.
+
+## Website and distribution
+
+```console
+python -m radar.site --output dist
+python web/check_site.py dist
+python -m http.server --directory dist
+python -m radar.notifications --date 2026-10-10 --output work/teams-card.json
+```
+
+The site includes readable article pages, references, text/tag search, topic and
+verdict filters, coverage weights, public weekly/monthly digests, RSS and a JSON
+feed. It uses plain HTML/CSS/JavaScript and the existing Python runtime, with no
+additional dependencies. Builds refuse non-empty output directories; review or
+choose a fresh directory before rebuilding. See [WEB-PUBLICATION.md](docs/WEB-PUBLICATION.md).
+
+Teams Workflows group-chat cards and generic JSON webhooks use explicit opt-in
+delivery; dry runs do not read destination secrets or contact services. Multiple
+destinations are selected by repeating `--destination-env`. RSS is also a public
+subscription channel. See [NOTIFICATIONS.md](docs/NOTIFICATIONS.md).
+
+Vector search remains an optional future index. Current text/tag search is local;
+structured event identity remains the authority for dedupe. See [SEARCH.md](docs/SEARCH.md).
 
 ## Contributing and license
 

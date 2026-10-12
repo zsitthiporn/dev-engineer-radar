@@ -24,3 +24,12 @@ product_aliases:
   postgresql:
     - PostgreSQL
     - Postgres
+  opentelemetry-obi:
+    - OpenTelemetry eBPF Instrumentation
+    - OBI
+  gitlab:
+    - GitLab
+  codeql:
+    - CodeQL
+  opentelemetry:
+    - OpenTelemetry

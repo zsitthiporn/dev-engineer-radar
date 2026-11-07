@@ -30,3 +30,4 @@
 {"schemaVersion":1,"id":"dotnet-inspect","name":"dotnet-inspect","homepage":"https://devblogs.microsoft.com/dotnet/delivering-skills-in-nuget-packages/","tags":[".NET","NuGet","AI","CLI","Skills"],"firstSeen":"2026-11-05"}
 {"schemaVersion":1,"id":"dotnet-package-skills","name":"dotnet-package-skills","homepage":"https://devblogs.microsoft.com/dotnet/delivering-skills-in-nuget-packages/","tags":[".NET","NuGet","AI","Skills"],"firstSeen":"2026-11-05"}
 {"schemaVersion":1,"id":"microsoft-sql-mcp-server","name":"Microsoft SQL MCP Server","homepage":"https://aka.ms/sql/mcp","tags":["SQL Server","MCP","Docker","AI"],"firstSeen":"2026-11-05"}
+{"schemaVersion":1,"id":"fairwinds-pluto","name":"Pluto","homepage":"https://github.com/FairwindsOps/pluto","repositoryUrl":"https://github.com/FairwindsOps/pluto","tags":["Kubernetes","Helm","API","Upgrade","CLI"],"firstSeen":"2026-11-07"}
